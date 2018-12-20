@@ -23,7 +23,8 @@ end
 
 	create mask with `p` fraction of samples present
 """
-getmask(d::Daf,p) = sample(1:d.d,Int(round(p*d.d)),replace = false)
+getmask(d::Daf,p::Real) = getmask(d, round(Int, p*d.d))
+getmask(d::Daf,p::Int) = sample(1:d.d, p, replace = false)
 
 
 """
@@ -39,10 +40,14 @@ meanscore(d::Daf) = mean(d.absent) - mean(d.present)
 
 		return the basic DAf score --- difference of means when features is present and absent
 """
-function HypothesisTests.UnequalVarianceTTest(d::Daf)
+function HypothesisTests.UnequalVarianceTTest(d::Daf,	μ0 = 0)
 	meanx, varx, nx = mean(d.present), var(d.present), d.present.n
 	meany, vary, ny = mean(d.absent), var(d.absent), d.absent.n
-	[HypothesisTests.pvalue(UnequalVarianceTTest(meanx[i], varx[i], nx[i], meany[i], vary[i], ny[i])) for i in 1:length(nx)]
+	xbar = meanx .- meany
+	stderr = @. sqrt(varx / nx + vary / ny)
+	t = @. (xbar - μ0) / stderr
+	df = @. (varx / nx + vary / ny)^2 / ((varx / nx)^2 / (nx - 1) + (vary / ny)^2 / (ny - 1))
+	[HypothesisTests.pvalue(UnequalVarianceTTest(nx[i], ny[i], xbar[i], df[i], stderr[i], t[i], μ0)) for i in 1:length(nx)]
 end
 
 function Base.show(io::IO, d::Daf)

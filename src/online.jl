@@ -19,8 +19,6 @@ function onlinedaf!(daf, onestep, p, n; warmup::Int = 0, breakpoints = 100, cb =
 		i > warmup && update!(daf,f,mask)
 		if mod(i, breakpoints) == 0
 			@printf("%d: mean error %g (%.2fs)\n", i, meanf/breakpoints,(time_ns() - start_t)/(1e9*breakpoints))
-			# gc();gc();gc();gc();gc();gc();
-	  #   run(pipeline(`/bin/cat /proc/meminfo`, `/bin/grep MemFree`))
 			meanf, start_t = 0.0, time_ns()
 			cb()
 		end
