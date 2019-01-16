@@ -18,7 +18,7 @@ function onlinedaf!(daf, onestep, p, n; warmup::Int = 0, breakpoints = 100, cb =
 		meanf += f 
 		i > warmup && update!(daf,f,mask)
 		if mod(i, breakpoints) == 0
-			@printf("%d: mean error %g (%.2fs)\n", i, meanf/breakpoints,(time_ns() - start_t)/(1e9*breakpoints))
+			# @printf("%d: mean error %g (%.2fs)\n", i, meanf/breakpoints,(time_ns() - start_t)/(1e9*breakpoints))
 			meanf, start_t = 0.0, time_ns()
 			cb()
 		end

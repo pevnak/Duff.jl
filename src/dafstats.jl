@@ -32,7 +32,7 @@ getmask(d::Daf,p::Int) = sample(1:d.d, p, replace = false)
 
 		return the basic DAf score --- difference of means when features is present and absent
 """
-meanscore(d::Daf) = mean(d.absent) - mean(d.present)
+meanscore(d::Daf) = mean(d.present) - mean(d.absent)
 
 
 """
