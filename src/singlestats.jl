@@ -26,7 +26,7 @@ SingleStats(d::Int) = SingleStats(zeros(d),zeros(d),zeros(Int,d))
 update!(s::SingleStats, f, mask::BitVector, negate::Bool) = (negate) ? update!(s::SingleStats,f,.!mask) : update!(s::SingleStats,f,mask)
 update!(s::SingleStats, f, idxs::Vector{Int}, negate::Bool) = (negate) ? update!(s::SingleStats,f,setdiff(1:length(s.n),idxs)) : update!(s::SingleStats,f,idxs)
 
-function update!(s::SingleStats,f,mask)
+function update!(s::SingleStats, f, mask)
 	s.s[mask] .+= f
 	s.q[mask] .+= f^2
 	s.n[mask] .+= 1
