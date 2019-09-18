@@ -1,7 +1,7 @@
 name = "Duff"
 uuid = "3e2ffa6a-ba38-11e8-0a1c-7b69309e1c72"
 authors = ["pevnak <pevnak@gmail.com>"]
-version = "0.3.0"
+version = "0.4.0"
 
 [deps]
 HypothesisTests = "09f84164-cd44-5f33-b23f-e6b0d136a0d5"
