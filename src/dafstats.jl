@@ -7,12 +7,12 @@ end
 Daf(d::Int) = Daf(SingleStats(d),SingleStats(d),d);
 
 """
-		function update!(s::Daf,f,mask) 
+		function update!(s::Daf,f,mask)
 
-		updates DAF statistics assuming that mask identifies which 
+		updates DAF statistics assuming that mask identifies which
 		samples are present
-"""	
-function update!(s::Daf,f,mask) 
+"""
+function update!(s::Daf,f,mask)
 	update!(s.present,f,mask,false)
 	update!(s.absent,f,mask,true)
 end
@@ -52,9 +52,13 @@ end
 
 function Base.show(io::IO, d::Daf)
 	s = meanscore(d)
-	p = UnequalVarianceTTest(d)
-	println("difference   p-value")
-	for i in 1:min(20,length(s))
-		println(@sprintf("%+.6f  %.6f",s[i], p[i]))
+	try
+		p = UnequalVarianceTTest(d)
+		show(io, "difference   p-value")
+		for i in 1:min(20,length(s))
+			show(io, @sprintf("%+.6f  %.6f",s[i], p[i]))
+		end
+	catch ArgumentError
+ 		show(io, "P value test fails.")
 	end
 end
