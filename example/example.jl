@@ -32,7 +32,7 @@ X = readlines("example/madelon_train.data") .|> (x->(x |> split .|> x->parse(Int
 Y = readlines("example/madelon_train.labels") .|> x->parse(Int, x)
 Y[Y.==-1] .= 2
 dim = size(X,1)
-p, nprobes, bs = 0.1, Int(1e5), 100
+p, nprobes, bs = 0.1, Int(1e3), 100
 trndata,tstdata = splitobs(shuffleobs((X,Y)), 0.5)
 model = Flux.Chain(Dense(dim,settings[:k],relu), [Dense(settings[:k],settings[:k],relu) for _ in 1:settings[:l]]..., Dense(settings[:k],2))
 opt = Flux.ADAM()
