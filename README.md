@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/pevnak/Duff.jl.svg?branch=master)](https://travis-ci.org/pevnak/Duff.jl)
-
+;
 # Duff.jl
 Dependency aware feature selection is a simple but effective method proposed in *Somol, Petr, Jiří Grim, and Pavel Pudil. 
 "Fast dependency-aware feature selection in very-high-dimensional pattern recognition." 
