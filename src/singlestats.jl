@@ -19,7 +19,7 @@ SingleStats(d::Int) = SingleStats(zeros(d),zeros(d),zeros(Int,d))
 """
 		update!(s::SingleStats,f,mask,negate::Bool)
 		update!(s::SingleStats,f,idx,negate::Bool)
-		
+
 		updates the stats with a value `f` contributing to samples in from `idxs` or `mask`. If `negate` is true, `mask`
 		is negated / `idxs` are set to complement of `idxs`
 """
@@ -33,5 +33,5 @@ function update!(s::SingleStats, f, mask)
 end
 
 Statistics.mean(s::SingleStats) = s.s ./ s.n
-Statistics.std(s::SingleStats) = sqrt.(s.q ./ s.n .- (s.s ./ s.n).^2)
-Statistics.var(s::SingleStats) = s.q ./ s.n .- (s.s ./ s.n).^2
+Statistics.std(s::SingleStats) = @. sqrt(s.q / s.n - (s.s / s.n)^2)
+Statistics.var(s::SingleStats) = @. s.q / s.n - (s.s / s.n)^2
