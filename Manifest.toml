@@ -60,9 +60,7 @@ version = "0.8.4"
 
 [[HypothesisTests]]
 deps = ["Combinatorics", "Distributions", "LinearAlgebra", "Random", "Rmath", "Roots", "Statistics", "StatsBase"]
-git-tree-sha1 = "c372d460eaf466cfbf6bcd952d3c3d6b135d8437"
-repo-rev = "master"
-repo-url = "https://github.com/JuliaStats/HypothesisTests.jl.git"
+git-tree-sha1 = "2c923100fa79f699d698c56d73c9fe0ad01c76db"
 uuid = "09f84164-cd44-5f33-b23f-e6b0d136a0d5"
 version = "0.9.0"
 
