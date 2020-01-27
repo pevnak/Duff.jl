@@ -36,3 +36,29 @@ using Duff, Test, Statistics, Random
 	@test isnan.(absent_std) == isnan.([2., 2., 5/4, 1/4, 1.].^0.5)
 	@test filter(!isnan, absent_std) ≈ [2., 2., 5/4, 1/4, 1.].^0.5
 end
+
+
+@testset "testing daf update" begin
+	daf = Daf(5)
+	Duff.update!(daf, 2, [true, true, true, false, false], [true, false, true, false, true])
+	@test daf.present.n ≈ [1, 0, 1, 0, 0]
+	@test daf.present.s ≈ [2, 0, 2, 0, 0]
+	@test daf.present.q ≈ [4, 0, 4, 0, 0]
+
+	@test daf.absent.n ≈ [0, 0, 0, 0, 1]
+	@test daf.absent.s ≈ [0, 0, 0, 0, 2]
+	@test daf.absent.q ≈ [0, 0, 0, 0, 4]
+end
+
+@testset "testing daf update with cluster indices" begin
+	daf = Daf(3)
+	Duff.update!(daf, 2, [true, true, true, false, false], [true, false, true, false, true], [1, 2, 3, 2, 1])
+	@test daf.present.n ≈ [1, 0, 1]
+	@test daf.present.s ≈ [2, 0, 2]
+	@test daf.present.q ≈ [4, 0, 4]
+
+	@test daf.absent.n ≈ [1, 0, 0]
+	@test daf.absent.s ≈ [2, 0, 0]
+	@test daf.absent.q ≈ [4, 0, 0]
+end
+
