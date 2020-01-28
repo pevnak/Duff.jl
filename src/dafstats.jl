@@ -28,6 +28,11 @@ function update!(s::Daf, f, mask, valid_indices)
 	update!(s.absent, f, mask, true, valid_indices)
 end
 
+function update!(s::Daf, f, mask) 
+	update!(s.present, f, mask, false)
+	update!(s.absent, f, mask, true)
+end
+
 function update!(s::Daf, f, mask, valid_indices, cluster_index) 
 	update!(s.present, f, mask, false, valid_indices, cluster_index)
 	update!(s.absent, f, mask, true, valid_indices, cluster_index)
