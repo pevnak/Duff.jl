@@ -14,9 +14,13 @@ Base.length(daf::Daf) = length(daf.present)
 		updates DAF statistics assuming that mask identifies which
 		samples are present
 """
-function update!(s::Daf, f, mask) 
-	update!(s.present, f, mask, false)
-	update!(s.absent, f, mask, true)
+
+function update!(s::Daf, f, present::Bool, i::Int) 
+	if present
+		update!(s.present, f, i)
+	else
+		update!(s.absent, f, i)
+	end
 end
 
 function update!(s::Daf, f, mask, valid_indices) 

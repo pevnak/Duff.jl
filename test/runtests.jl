@@ -62,3 +62,16 @@ end
 	@test daf.absent.q ≈ [4, 0, 0]
 end
 
+@testset "testing update daf by a specific index" begin
+	daf = Daf(3)
+	Duff.update!(daf, 2, true, 1)
+	Duff.update!(daf, 3, false, 2)
+	@test daf.present.n ≈ [1, 0, 0]
+	@test daf.present.s ≈ [2, 0, 0]
+	@test daf.present.q ≈ [4, 0, 0]
+
+	@test daf.absent.n ≈ [0, 1, 0]
+	@test daf.absent.s ≈ [0, 3, 0]
+	@test daf.absent.q ≈ [0, 9, 0]
+end
+
