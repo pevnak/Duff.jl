@@ -44,6 +44,12 @@ function update!(s::SingleStats, f, mask)
 	s.n[mask] .+= 1
 end
 
+function update!(s::SingleStats, f, mask::Int)
+	s.s[mask] += f
+	s.q[mask] += f^2
+	s.n[mask] += 1
+end
+
 function update!(s::SingleStats, f, mask, valid_indexes::Vector{Int})
 	valid_indexes = valid_indexes[mask]
 	s.s[valid_indexes] .+= f
