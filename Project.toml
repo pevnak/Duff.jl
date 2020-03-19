@@ -1,7 +1,7 @@
 name = "Duff"
 uuid = "3e2ffa6a-ba38-11e8-0a1c-7b69309e1c72"
 authors = ["pevnak <pevnak@gmail.com>"]
-version = "0.4.1"
+version = "0.4.2"
 
 [deps]
 HypothesisTests = "09f84164-cd44-5f33-b23f-e6b0d136a0d5"
@@ -12,4 +12,4 @@ StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
 [compat]
 HypothesisTests = "0.8, 0.9"
 StatsBase = "0.24, 0.25, 0.26, 0.27, 0.28, 0.29, 0.30, 0.31, 0.32"
-julia = "^1"
+julia = "^1" 
