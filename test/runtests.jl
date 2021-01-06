@@ -14,27 +14,53 @@ using Duff, Test, Statistics, Random
 	present_var = var(daf.present)
 	present_std = std(daf.present)
 
-	@test isnan.(present_mean) == isnan.([NaN, NaN, 4., 7/3, 4/3])
-	@test filter(!isnan, present_mean) ≈ [4., 7/3, 4/3]
+	# because of breaking change in RNG in https://github.com/JuliaLang/julia/pull/35078
+	expected_mean = @static if VERSION < v"1.5.0"
+		[NaN, NaN, 4., 7/3, 4/3]
+	else
+		[8/3, 0., 0., 7/2, NaN]
+	end
 
-	@test isnan.(present_var) == isnan.([NaN , NaN, 0., 26/9, 14/9])
-	@test filter(!isnan, present_var) ≈ [0., 26/9, 14/9]
+	expected_var = @static if VERSION < v"1.5.0"
+		[NaN , NaN, 0., 26/9, 14/9]
+	else
+		[14/9, 0., 0., 1/4, NaN]
+	end
 
-	@test isnan.(present_std) == isnan.([NaN , NaN, 0., 26/9, 14/9].^0.5)
-	@test filter(!isnan, present_std) ≈ [0., 26/9, 14/9].^0.5
+	# there is no single function that would compare correctly NaN values and also compare floats as ≈
+	@test isnan.(present_mean) == isnan.(present_mean)
+	@test filter(!isnan, present_mean) ≈ filter(!isnan, present_mean)
+
+	@test isnan.(expected_var) == isnan.(expected_var)
+	@test filter(!isnan, expected_var) ≈ filter(!isnan, expected_var)
+
+	@test isnan.(present_mean) == isnan.(present_mean)
+	@test filter(!isnan, present_std) ≈ filter(!isnan, expected_var.^0.5)
 
 	absent_mean = mean(daf.absent)
 	absent_var = var(daf.absent)
 	absent_std = std(daf.absent)
 
-	@test isnan.(absent_mean) == isnan.([2., 2., 1.5, 1.5, 3.])
-	@test filter(!isnan, absent_mean) ≈ [2., 2., 1.5, 1.5, 3.]
+	expected_mean = @static if VERSION < v"1.5.0"
+		[2., 2., 1.5, 1.5, 3.]
+	else
+		[1., 2.5, 2.5, 1., 2.]
+	end
 
-	@test isnan.(absent_var) == isnan.([2., 2., 5/4, 1/4, 1.])
-	@test filter(!isnan, absent_var) ≈ [2., 2., 5/4, 1/4, 1.]
+	expected_var = @static if VERSION < v"1.5.0"
+		[2., 2., 5/4, 1/4, 1.]
+	else
+		[1., 5/4, 5/4, 2/3, 2.]
+	end
 
-	@test isnan.(absent_std) == isnan.([2., 2., 5/4, 1/4, 1.].^0.5)
-	@test filter(!isnan, absent_std) ≈ [2., 2., 5/4, 1/4, 1.].^0.5
+	@test isnan.(absent_mean) == isnan.(expected_mean)
+	@test filter(!isnan, absent_mean) ≈ expected_mean
+
+	@test isnan.(absent_var) == isnan.(expected_var)
+	@test filter(!isnan, absent_var) ≈ expected_var
+
+	@test isnan.(absent_std) == isnan.(expected_var.^0.5)
+	@test filter(!isnan, absent_std) ≈ expected_var.^0.5
 end
 
 
@@ -74,4 +100,3 @@ end
 	@test daf.absent.s ≈ [0, 3, 0]
 	@test daf.absent.q ≈ [0, 9, 0]
 end
-
