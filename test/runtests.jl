@@ -30,9 +30,9 @@ using Duff, Test, Statistics, Random
 	# isapprox with kwarg nans=true is equal to comparing this
 	# @test isnan.(present_mean) == isnan.(expected_mean)
 	# @test filter(!isnan, present_mean) ≈ filter(!isnan, expected_mean)
-	@test isapprox(present_mean, expected_mean, nans=true)
-	@test isapprox(present_var, expected_var, nans=true)
-	@test isapprox(present_std, expected_var.^0.5, nans=true)
+	@test present_mean ≈ expected_mean nans=true
+	@test present_var ≈ expected_var nans=true
+	@test present_std ≈ expected_var.^0.5 nans=true
 
 	absent_mean = mean(daf.absent)
 	absent_var = var(daf.absent)
@@ -50,9 +50,9 @@ using Duff, Test, Statistics, Random
 		[1., 5/4, 5/4, 2/3, 2.]
 	end
 
-	@test isapprox(absent_mean, expected_mean, nans=true)
-	@test isapprox(absent_var, expected_var, nans=true)
-	@test isapprox(absent_std, expected_var.^0.5, nans=true)
+	@test absent_mean ≈ expected_mean nans=true
+	@test absent_var ≈ expected_var nans=true
+	@test absent_std ≈ expected_var.^0.5 nans=true
 end
 
 
