@@ -27,15 +27,12 @@ using Duff, Test, Statistics, Random
 		[14/9, 0., 0., 1/4, NaN]
 	end
 
-	# there is no single function that would compare correctly NaN values and also compare floats as ≈
-	@test isnan.(present_mean) == isnan.(present_mean)
-	@test filter(!isnan, present_mean) ≈ filter(!isnan, present_mean)
-
-	@test isnan.(expected_var) == isnan.(expected_var)
-	@test filter(!isnan, expected_var) ≈ filter(!isnan, expected_var)
-
-	@test isnan.(present_mean) == isnan.(present_mean)
-	@test filter(!isnan, present_std) ≈ filter(!isnan, expected_var.^0.5)
+	# isapprox with kwarg nans=true is equal to comparing this
+	# @test isnan.(present_mean) == isnan.(expected_mean)
+	# @test filter(!isnan, present_mean) ≈ filter(!isnan, expected_mean)
+	@test isapprox(present_mean, expected_mean, nans=true)
+	@test isapprox(present_var, expected_var, nans=true)
+	@test isapprox(present_std, expected_var.^0.5, nans=true)
 
 	absent_mean = mean(daf.absent)
 	absent_var = var(daf.absent)
@@ -53,14 +50,9 @@ using Duff, Test, Statistics, Random
 		[1., 5/4, 5/4, 2/3, 2.]
 	end
 
-	@test isnan.(absent_mean) == isnan.(expected_mean)
-	@test filter(!isnan, absent_mean) ≈ expected_mean
-
-	@test isnan.(absent_var) == isnan.(expected_var)
-	@test filter(!isnan, absent_var) ≈ expected_var
-
-	@test isnan.(absent_std) == isnan.(expected_var.^0.5)
-	@test filter(!isnan, absent_std) ≈ expected_var.^0.5
+	@test isapprox(absent_mean, expected_mean, nans=true)
+	@test isapprox(absent_var, expected_var, nans=true)
+	@test isapprox(absent_std, expected_var.^0.5, nans=true)
 end
 
 
