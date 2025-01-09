@@ -1,6 +1,4 @@
-[![Build Status](https://github.com/pevnak/Duff.jl/workflows/CI/badge.svg)](https://github.com/pevnak/Duff.jl/actions?query=workflow%3ACI)
-[![Coverage Status](https://coveralls.io/repos/github/pevnak/Duff.jl/badge.svg?branch=master)](https://coveralls.io/github/pevnak/Duff.jl?branch=master)
-[![codecov.io](http://codecov.io/github/Pevnak/Duff.jl/coverage.svg?branch=master)](http://codecov.io/github/Pevnak/Duff.jl?branch=master)
+[![Build Status](https://github.com/pevnak/Duff.jl/actions/workflows/ci.yml/badge.svg)](https://github.com/pevnak/Duff.jl/actions/workflows/ci.yml)
 
 # Duff.jl
 Dependency aware feature selection is a simple but effective method proposed in *Somol, Petr, Jiří Grim, and Pavel Pudil. 
