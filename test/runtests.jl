@@ -1,58 +1,34 @@
-using Duff, Test, Statistics, Random
+using Duff, Test, Statistics, StableRNGs
+
+rng = StableRNG(0)
 
 @testset "testing daf update" begin
-	Random.seed!(1234)
 	daf = Daf(5)
 	Duff.meanscore(daf)
-	Duff.update!(daf, 2, Duff.getmask(daf, 0.1))
-	Duff.update!(daf, 1, Duff.getmask(daf, 0.2))
-	Duff.update!(daf, 0, Duff.getmask(daf, 0.3))
-	Duff.update!(daf, 3, Duff.getmask(daf, 0.4))
-	Duff.update!(daf, 4, Duff.getmask(daf, 0.5))
+	Duff.update!(daf, 2, Duff.getmask(rng, daf, 0.1))
+	Duff.update!(daf, 1, Duff.getmask(rng, daf, 0.2))
+	Duff.update!(daf, 0, Duff.getmask(rng, daf, 0.3))
+	Duff.update!(daf, 3, Duff.getmask(rng, daf, 0.4))
+	Duff.update!(daf, 4, Duff.getmask(rng, daf, 0.5))
 
 	present_mean = mean(daf.present)
 	present_var = var(daf.present)
 	present_std = std(daf.present)
 
-	# because of breaking change in RNG in https://github.com/JuliaLang/julia/pull/35078
-	expected_mean = @static if VERSION < v"1.5.0"
-		[NaN, NaN, 4., 7/3, 4/3]
-	else
-		[8/3, 0., 0., 7/2, NaN]
-	end
-
-	expected_var = @static if VERSION < v"1.5.0"
-		[NaN , NaN, 0., 26/9, 14/9]
-	else
-		[14/9, 0., 0., 1/4, NaN]
-	end
-
 	# isapprox with kwarg nans=true is equal to comparing this
 	# @test isnan.(present_mean) == isnan.(expected_mean)
 	# @test filter(!isnan, present_mean) ≈ filter(!isnan, expected_mean)
-	@test present_mean ≈ expected_mean nans=true
-	@test present_var ≈ expected_var nans=true
-	@test present_std ≈ expected_var.^0.5 nans=true
+	@test present_mean ≈ [NaN, 8/3, 0., 0., 7/2] nans=true
+	@test present_var ≈ [NaN, 14/9, 0., 0., 1/4] nans=true
+	@test present_std ≈ .√([NaN, 14/9, 0., 0., 1/4]) nans=true
 
 	absent_mean = mean(daf.absent)
 	absent_var = var(daf.absent)
 	absent_std = std(daf.absent)
 
-	expected_mean = @static if VERSION < v"1.5.0"
-		[2., 2., 1.5, 1.5, 3.]
-	else
-		[1., 2.5, 2.5, 1., 2.]
-	end
-
-	expected_var = @static if VERSION < v"1.5.0"
-		[2., 2., 5/4, 1/4, 1.]
-	else
-		[1., 5/4, 5/4, 2/3, 2.]
-	end
-
-	@test absent_mean ≈ expected_mean nans=true
-	@test absent_var ≈ expected_var nans=true
-	@test absent_std ≈ expected_var.^0.5 nans=true
+	@test absent_mean ≈ [2., 1., 5/2, 5/2, 1.] nans=true
+	@test absent_var ≈ [2., 1., 5/4, 5/4, 2/3] nans=true
+	@test absent_std ≈ .√([2., 1., 5/4, 5/4, 2/3]) nans=true
 end
 
 

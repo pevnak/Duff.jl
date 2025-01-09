@@ -1,8 +1,7 @@
 module Duff
-using Statistics, StatsBase, Printf, HypothesisTests
+using Random, Statistics, StatsBase, Printf, HypothesisTests
 
 BoolVector = Union{BitArray{1}, Array{Bool,1}}
-
 
 include("singlestats.jl")
 include("dafstats.jl")

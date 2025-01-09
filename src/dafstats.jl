@@ -40,12 +40,14 @@ end
 
 
 """
-	getmask(d::Daf,p)
+	getmask([rng=default_rng()], d::Daf, p)
 
 	create mask with `p` fraction of samples present
 """
-getmask(d::Daf,p::Real) = getmask(d, round(Int, p*d.d))
-getmask(d::Daf,p::Int) = sample(1:d.d, p, replace = false)
+getmask(d::Daf, p::Real) = getmask(Random.default_rng(), d, p)
+getmask(d::Daf, p::Int) = getmask(Random.default_rng(), d, p)
+getmask(rng::AbstractRNG, d::Daf, p::Real) = getmask(rng, d, round(Int, p*d.d))
+getmask(rng::AbstractRNG, d::Daf, p::Int) = sample(rng, 1:d.d, p, replace = false)
 
 
 """
